@@ -523,3 +523,79 @@ extension ChildOf where Element: ContainsTrack {
     return .init(.element("track", attributes: [.src(src)] + attributes, []))
   }
 }
+
+// MARK: RSS
+
+extension ChildOf where Element == Tag.RSS {
+    public static func channel(_ content: ChildOf<Tag.Channel>...) -> ChildOf {
+        return .init(.element("channel", content: ChildOf<Tag.Channel>.fragment(content).rawValue))
+    }
+}
+
+extension ChildOf where Element == Tag.Channel {
+    public static func title(_ content: String) -> ChildOf {
+        return .init(.element("title", content: [.text(content)]))
+    }
+    public static func link(_ content: String) -> ChildOf {
+        return .init(.element("link", content: [.text(content)]))
+    }
+    public static func description(_ content: String) -> ChildOf {
+        return .init(.element("description", content: [.text(content)]))
+    }
+    public static func copyright(_ content: String) -> ChildOf {
+        return .init(.element("copyright", content: [.text(content)]))
+    }
+    public static func pubDate(_ content: String) -> ChildOf {
+        return .init(.element("pubDate", content: [.text(content)]))
+    }
+    public static func atomLink(_ content: String) -> ChildOf {
+        let attributes: [Attribute<Tag.Link>] = [
+            .rel(.init(rawValue: "self")),
+            .type(.application(.init(rawValue: "rss+xml"))),
+            .href(content)
+        ]
+        return .init(.element("atom:link", attributes: attributes, []))
+    }
+    public static func image(_ content: ChildOf<Tag.ChannelImage>...) -> ChildOf {
+        return .init(.element("image", content: ChildOf<Tag.ChannelImage>.fragment(content).rawValue))
+    }
+    public static func item(_ content: ChildOf<Tag.Item>...) -> ChildOf {
+        return .init(.element("item", content: ChildOf<Tag.Item>.fragment(content).rawValue))
+    }
+}
+
+extension ChildOf where Element == Tag.ChannelImage {
+    public static func title(_ content: String) -> ChildOf {
+        return .init(.element("title", content: [.text(content)]))
+    }
+    public static func link(_ content: String) -> ChildOf {
+        return .init(.element("link", content: [.text(content)]))
+    }
+    public static func url(_ content: String) -> ChildOf {
+        return .init(.element("url", content: [.text(content)]))
+    }
+}
+
+extension ChildOf where Element == Tag.Item {
+    public static func title(_ content: String) -> ChildOf {
+        return .init(.element("title", content: [.text(content)]))
+    }
+    public static func link(_ content: String) -> ChildOf {
+        return .init(.element("link", content: [.text(content)]))
+    }
+    public static func description(_ content: String) -> ChildOf {
+        return .init(.element("description", content: [.text(content)]))
+    }
+    public static func pubDate(_ content: String) -> ChildOf {
+        return .init(.element("pubDate", content: [.text(content)]))
+    }
+    public static func guid(attributes: [Attribute<Tag.GUID>] = [], _ content: String) -> ChildOf {
+        return .init(.element("guid", attributes: attributes, [.text(content)]))
+    }
+    public static func author(_ content: String) -> ChildOf {
+        return .init(.element("author", content: [.text(content)]))
+    }
+    public static func contentEncoded(_ content: String) -> ChildOf {
+        return .init(.element("content:encoded", content: [.text(content)]))
+    }
+}

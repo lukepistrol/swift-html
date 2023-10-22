@@ -162,3 +162,15 @@ extension Node: ExpressibleByStringLiteral {
     }
   }
 #endif
+
+// MARK: RSS
+
+extension Node {
+    public static func element(_ name: StaticString, content: Node...) -> Node {
+        .element(name, attributes: [Attribute<Node>](), .fragment(content))
+    }
+
+    public static func rss(_ content: ChildOf<Tag.RSS>...) -> Node {
+        .element("rss", attributes: [Attribute<Tag.RSS>.version("2.0")], ChildOf<Tag.RSS>.fragment(content).rawValue)
+    }
+}

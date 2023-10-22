@@ -1557,3 +1557,17 @@ extension Attribute where Element: HasWidth {
     return .init("width", String(value))
   }
 }
+
+// MARK: RSS
+
+extension Attribute where Element == Tag.RSS {
+    public static func version(_ value: String) -> Attribute {
+        .init("version", value)
+    }
+}
+
+extension Attribute where Element == Tag.GUID {
+    public static func isPermalink(_ value: Bool) -> Attribute {
+        .init("isPermalink", value.description)
+    }
+}

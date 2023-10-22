@@ -103,3 +103,13 @@ public enum Tag {
   public enum Var {}
   public enum Video {}
 }
+
+// MARK: RSS
+
+extension Tag {
+    public enum RSS {}
+    public enum Channel {}
+    public enum Item {}
+    public enum ChannelImage {}
+    public enum GUID {}
+}
