@@ -17,12 +17,6 @@ public enum Node {
 
   /// Represents a text node that can be escaped when rendered.
   case text(String)
-
-  indirect case `if`(Bool, then: Node)
-
-  indirect case ifElse(Bool, then: Node, else: Node)
-
-  indirect case ifLet(Any?, then: (Any) -> Node)
 }
 
 extension Node {
@@ -65,16 +59,6 @@ extension Node {
       return string.isEmpty
     case .element:
       return false
-    case let .if(condition, thenNode):
-      return condition && thenNode.isEmpty
-    case let .ifElse(condition, thenNode, elseNode):
-      return (condition && thenNode.isEmpty) || (!condition && elseNode.isEmpty)
-    case let .ifLet(value, thenNode):
-      if let value {
-        return thenNode(value).isEmpty
-      } else {
-        return true
-      }
     case let .fragment(children):
       return children.allSatisfy { $0.isEmpty }
     }
@@ -108,7 +92,7 @@ extension Node: Equatable {
 extension Node: Hashable {
   public func hash(into hasher: inout Hasher) {
     enum HashingTag: String {
-      case comment, doctype, element, fragment, raw, text, `if`, ifElse, ifLet
+      case comment, doctype, element, fragment, raw, text
     }
 
     switch self {
@@ -135,17 +119,6 @@ extension Node: Hashable {
     case let .text(text):
       hasher.combine(HashingTag.text)
       hasher.combine(text)
-    case let .if(condition, thenNode):
-      hasher.combine(condition)
-      hasher.combine(thenNode)
-    case let .ifElse(condition, thenNode, elseNode):
-      hasher.combine(condition)
-      hasher.combine(thenNode)
-      hasher.combine(elseNode)
-    case let .ifLet(value, thenNode):
-      if let value {
-        hasher.combine(thenNode(value))
-      }
     }
   }
 }
@@ -190,14 +163,34 @@ extension Node: ExpressibleByStringLiteral {
   }
 #endif
 
+// MARK: Conditional Nodes
+
+extension Node {
+  public static func `if`(_ condition: Bool, then: Node) -> Node {
+    return condition ? then : []
+  }
+
+  public static func ifLet(_ condition: Bool, then: Node, else: Node) -> Node {
+    return condition ? then : `else`
+  }
+
+  public static func ifLet<T>(_ value: T?, then: @escaping (T) -> Node) -> Node {
+    if let value {
+      return then(value)
+    } else {
+      return []
+    }
+  }
+}
+
 // MARK: RSS
 
 extension Node {
-    public static func element(_ name: StaticString, content: Node...) -> Node {
-        .element(name, attributes: [Attribute<Node>](), .fragment(content))
-    }
+  public static func element(_ name: StaticString, content: Node...) -> Node {
+    .element(name, attributes: [Attribute<Node>](), .fragment(content))
+  }
 
-    public static func rss(_ content: ChildOf<Tag.RSS>...) -> Node {
-        .element("rss", attributes: [Attribute<Tag.RSS>.version("2.0")], ChildOf<Tag.RSS>.fragment(content).rawValue)
-    }
+  public static func rss(_ content: ChildOf<Tag.RSS>...) -> Node {
+    .element("rss", attributes: [Attribute<Tag.RSS>.version("2.0")], ChildOf<Tag.RSS>.fragment(content).rawValue)
+  }
 }

@@ -89,20 +89,6 @@ func render(_ node: Node, into output: inout String, voidElements: Set<String>) 
     output.append(escapeTextNode(text: string))
   case let .raw(string):
     output.append(string)
-  case let .if(condition, thenNode):
-    if condition {
-      output.append(render(thenNode, voidElements: voidElements))
-    }
-  case let .ifElse(condition, thenNode, elseNode):
-    if condition {
-      output.append(render(thenNode, voidElements: voidElements))
-    } else {
-      output.append(render(elseNode, voidElements: voidElements))
-    }
-  case let .ifLet(value, thenNode):
-    if let value {
-      output.append(render(thenNode(value), voidElements: voidElements))
-    }
   }
 }
 
