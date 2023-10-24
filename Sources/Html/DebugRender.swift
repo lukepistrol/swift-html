@@ -110,7 +110,18 @@ func debugRender(_ node: Node, config: Config = .pretty, voidElements: Set<Strin
       output.append(indentation)
       output.append(string)
       output.append(config.newline)
+    case let .if(condition, thenNode):
+      if condition {
+        output.append(debugRender(thenNode, voidElements: voidElements))
+      }
+    case let .ifElse(condition, thenNode, elseNode):
+      if condition {
+        output.append(debugRender(thenNode, voidElements: voidElements))
+      } else {
+        output.append(debugRender(elseNode, voidElements: voidElements))
+      }
     }
+
   }
 
   var string = ""

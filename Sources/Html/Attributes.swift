@@ -1325,6 +1325,7 @@ extension Attribute where Element: HasRel {
     }
 
     public static var alternate: Rel { return Rel(rawValue: "alternate") }
+    public static var appleTouchIcon: Rel { return Rel(rawValue: "apple-touch-icon") }
     public static var author: Rel { return Rel(rawValue: "author") }
     public static var bookmark: Rel { return Rel(rawValue: "bookmark") }
     public static var help: Rel { return Rel(rawValue: "help") }
@@ -1490,6 +1491,13 @@ extension Attribute where Element: HasMediaType {
   /// - Parameter value: Hint for the type of the referenced resource.
   public static func type(_ value: MediaType) -> Attribute {
     return .init("type", value.description)
+  }
+
+  /// Reference for sizes of e.g. a favicon link.
+  ///
+  /// - Parameter value: The sizes string (e.g. 32x32)
+  public static func sizes(_ value: String) -> Attribute {
+    return .init("sizes", value)
   }
 }
 

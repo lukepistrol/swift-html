@@ -250,12 +250,22 @@ extension ChildOf where Element == Tag.Head {
     return meta(attributes: [.init("name", "author"), .content(author)])
   }
 
+  public static func meta(copyright: String) -> ChildOf {
+    return meta(attributes: [.init("name", "copyright"), .content(copyright)])
+  }
+
   public static func meta(description: String) -> ChildOf {
     return meta(attributes: [.init("name", "description"), .content(description)])
   }
 
   public static func meta(generator: String) -> ChildOf {
     return meta(attributes: [.init("name", "generator"), .content(generator)])
+  }
+
+  public static func meta(googleSiteVerification: String) -> ChildOf {
+    return meta(attributes: [
+        .init("name", "google-site-verification"), .content(googleSiteVerification)
+    ])
   }
 
   public static func meta(keywords: [String]) -> ChildOf {

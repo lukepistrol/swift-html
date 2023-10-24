@@ -17,6 +17,10 @@ public enum Node {
 
   /// Represents a text node that can be escaped when rendered.
   case text(String)
+
+  indirect case `if`(Bool, then: Node)
+
+  indirect case ifElse(Bool, then: Node, else: Node)
 }
 
 extension Node {
@@ -59,6 +63,10 @@ extension Node {
       return string.isEmpty
     case .element:
       return false
+    case let .if(condition, thenNode):
+      return condition && thenNode.isEmpty
+    case let .ifElse(condition, thenNode, elseNode):
+      return (condition && thenNode.isEmpty) || (!condition && elseNode.isEmpty)
     case let .fragment(children):
       return children.allSatisfy { $0.isEmpty }
     }
@@ -92,7 +100,7 @@ extension Node: Equatable {
 extension Node: Hashable {
   public func hash(into hasher: inout Hasher) {
     enum HashingTag: String {
-      case comment, doctype, element, fragment, raw, text
+      case comment, doctype, element, fragment, raw, text, `if`, ifElse
     }
 
     switch self {
@@ -119,6 +127,13 @@ extension Node: Hashable {
     case let .text(text):
       hasher.combine(HashingTag.text)
       hasher.combine(text)
+    case let .if(condition, thenNode):
+      hasher.combine(condition)
+      hasher.combine(thenNode)
+    case let .ifElse(condition, thenNode, elseNode):
+      hasher.combine(condition)
+      hasher.combine(thenNode)
+      hasher.combine(elseNode)
     }
   }
 }

@@ -63,6 +63,7 @@ public struct Application: RawRepresentable {
 
   public static let javascript = Application(rawValue: "javascript")
   public static let json = Application(rawValue: "json")
+  public static let rssXml = Application(rawValue: "rss+xml")
   public static let xml = Application(rawValue: "xml")
   public static let xWwwFormUrlencoded = Application(rawValue: "x-www-form-url-encoded")
 }
