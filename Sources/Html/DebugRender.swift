@@ -120,8 +120,11 @@ func debugRender(_ node: Node, config: Config = .pretty, voidElements: Set<Strin
       } else {
         output.append(debugRender(elseNode, voidElements: voidElements))
       }
+    case let .ifLet(value, thenNode):
+      if let value {
+        output.append(debugRender(thenNode(value), voidElements: voidElements))
+      }
     }
-
   }
 
   var string = ""

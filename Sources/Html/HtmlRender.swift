@@ -99,6 +99,10 @@ func render(_ node: Node, into output: inout String, voidElements: Set<String>) 
     } else {
       output.append(render(elseNode, voidElements: voidElements))
     }
+  case let .ifLet(value, thenNode):
+    if let value {
+      output.append(render(thenNode(value), voidElements: voidElements))
+    }
   }
 }
 
