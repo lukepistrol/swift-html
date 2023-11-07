@@ -162,35 +162,3 @@ extension Node: ExpressibleByStringLiteral {
     }
   }
 #endif
-
-// MARK: Conditional Nodes
-
-extension Node {
-  public static func `if`(_ condition: Bool, then: Node) -> Node {
-    return condition ? then : []
-  }
-
-  public static func ifLet(_ condition: Bool, then: Node, else: Node) -> Node {
-    return condition ? then : `else`
-  }
-
-  public static func ifLet<T>(_ value: T?, then: @escaping (T) -> Node) -> Node {
-    if let value {
-      return then(value)
-    } else {
-      return []
-    }
-  }
-}
-
-// MARK: RSS
-
-extension Node {
-  public static func element(_ name: StaticString, content: Node...) -> Node {
-    .element(name, attributes: [Attribute<Node>](), .fragment(content))
-  }
-
-  public static func rss(_ content: ChildOf<Tag.RSS>...) -> Node {
-    .element("rss", attributes: [Attribute<Tag.RSS>.version("2.0")], ChildOf<Tag.RSS>.fragment(content).rawValue)
-  }
-}

@@ -6,6 +6,34 @@ extension Node {
       String(describing: name), attributes.map { ($0.key, $0.value) }, .fragment(children))
   }
 
+  public static func `if`(_ condition: Bool, then: Node) -> Node {
+    return condition ? then : []
+  }
+
+  public static func ifLet(_ condition: Bool, then: Node, else: Node) -> Node {
+    return condition ? then : `else`
+  }
+
+  public static func ifLet<T>(_ value: T?, then: @escaping (T) -> Node) -> Node {
+    if let value {
+      return then(value)
+    } else {
+      return []
+    }
+  }
+
+  public static func element(_ name: StaticString, content: Node...) -> Node {
+    .element(name, attributes: [Attribute<Node>](), .fragment(content))
+  }
+
+  public static func rss(_ content: ChildOf<Tag.RSS>...) -> Node {
+    .element("rss", attributes: [Attribute<Tag.RSS>.version("2.0")], ChildOf<Tag.RSS>.fragment(content).rawValue)
+  }
+
+  public static func xmlHeader() -> Node {
+    .raw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+  }
+
   /// The `<a>` element represents either a hyperlink (a hypertext anchor) labeled by its contents, or a placeholder for where a link might otherwise have been placed, if it had been relevant, consisting of just the element's contents.
   ///
   /// - Parameters:
@@ -608,6 +636,10 @@ extension Node {
     return .element("p", attributes: attributes, .fragment(content))
   }
 
+  public static func picture(_ content: ChildOf<Tag.Picture>...) -> Node {
+    return .element("picture", content: ChildOf.fragment(content).rawValue)
+  }
+
   //public static func picture(
   //  attributes: [Attribute<Tag.Picture>],
   //  _ content: [ChildOf<Tag.Picture>],
@@ -827,6 +859,10 @@ extension Node {
   public static func ul(attributes: [Attribute<Tag.Ul>] = [], _ content: ChildOf<Tag.Ul>...) -> Node
   {
     return .element("ul", attributes: attributes, ChildOf.fragment(content).rawValue)
+  }
+
+  public static func urlset(xmlns: String = "http://www.sitemaps.org/schemas/sitemap/0.9", _ content: ChildOf<Tag.UrlSet>...) -> Node {
+    return .element("urlset", [("xmlns", xmlns)], ChildOf.fragment(content).rawValue)
   }
 
   /// The `<var>` element represents a variable. This could be an actual variable in a mathematical expression or programming context, an identifier representing a constant, a symbol identifying a physical quantity, a function parameter, or just be a term used as a placeholder in prose.

@@ -365,6 +365,10 @@ extension ChildOf where Element == Tag.Picture {
   public static func source(srcset: String, attributes: [Attribute<Tag.Source>] = []) -> ChildOf {
     return .init(.element("source", attributes: [.srcset(srcset)] + attributes, []))
   }
+
+  public static func img(src: String, alt: String, attributes: [Attribute<Tag.Img>] = []) -> ChildOf {
+    return .init(.img(attributes: [.src(src), .alt(alt)] + attributes))
+  }
 }
 
 extension ChildOf where Element == Tag.Table {
@@ -445,6 +449,15 @@ extension ChildOf where Element == Tag.Tr {
   ///   - content: Child nodes.
   public static func th(attributes: [Attribute<Tag.Th>] = [], _ content: Node...) -> ChildOf {
     return .init(.element("th", attributes: attributes, .fragment(content)))
+  }
+}
+
+extension ChildOf where Element == Tag.UrlSet {
+  public static func url(loc: String, lastMod: String) -> ChildOf {
+    return .init(.element("url", [], [
+      .element("loc", content: [.text(loc)]),
+      .element("lastmod", content: [.text(lastMod)]),
+    ]))
   }
 }
 

@@ -100,6 +100,7 @@ public enum Tag {
   public enum Tr {}
   public enum U {}
   public enum Ul {}
+  public enum UrlSet {}
   public enum Var {}
   public enum Video {}
 }

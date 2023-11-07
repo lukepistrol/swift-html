@@ -109,6 +109,7 @@ public struct Image: RawRepresentable {
   public static let png = Image(rawValue: "png")
   public static let svg = Image(rawValue: "svg+xml")
   public static let tiff = Image(rawValue: "tiff")
+  public static let webp = Image(rawValue: "webp")
 }
 
 public struct Multipart: RawRepresentable {
