@@ -292,6 +292,10 @@ extension ChildOf where Element == Tag.Head {
     )
   }
 
+  public static func noscript(_ content: ChildOf...) -> ChildOf {
+    return .init(.noscript(ChildOf.fragment(content).rawValue))
+  }
+
   /// The `<style>` element allows authors to embed style information in their documents.
   ///
   /// - Parameters:

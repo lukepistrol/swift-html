@@ -582,6 +582,10 @@ extension Node {
     return .element("nav", attributes: attributes, .fragment(content))
   }
 
+  public static func noscript(_ content: Node...) -> Node {
+    return .element("noscript", content: .fragment(content))
+  }
+
   // TODO: Required attribute "data" or "type"
   /// The `<object>` element can represent an external resource, which, depending on the type of the resource, will either be treated as an image, as a nested browsing context, or as an external resource to be processed by a plugin.
   ///
