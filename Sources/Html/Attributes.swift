@@ -1336,6 +1336,7 @@ extension Attribute where Element: HasRel {
     public static var next: Rel { return Rel(rawValue: "next") }
     public static var nofollow: Rel { return Rel(rawValue: "nofollow") }
     public static var prev: Rel { return Rel(rawValue: "prev") }
+    public static var preload: Rel { return Rel(rawValue: "preload") }
     public static var search: Rel { return Rel(rawValue: "search") }
     public static var stylesheet: Rel { return Rel(rawValue: "stylesheet") }
     public static var tag: Rel { return Rel(rawValue: "tag") }
@@ -1565,6 +1566,12 @@ extension Attribute where Element: HasWidth {
   /// - Parameter value: Vertical dimension.
   public static func width(_ value: Int) -> Attribute {
     return .init("width", String(value))
+  }
+}
+
+extension Attribute where Element == Tag.Link {
+  public static func `as`(_ value: String) -> Attribute {
+    .init("as", value)
   }
 }
 
